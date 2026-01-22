@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChefLancer Pro - AI Home Food Framework</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
+        body { font-family: 'Outfit', sans-serif; background-color: #f8fafc; }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .chef-card:hover { transform: translateY(-5px); transition: all 0.3s ease; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // --- COMPONENTS ---
+
+        const Navbar = ({ activeTab, setTab }) => (
+            <nav className="glass sticky top-0 z-50 border-b border-gray-200 p-4">
+                <div className="max-w-7xl mx-auto flex justify-between items-center">
+                    <div className="flex items-center gap-2 cursor-pointer" onClick={() => setTab('home')}>
+                        <div className="bg-orange-600 p-2 rounded-lg">
+                            <i className="fas fa-utensils text-white"></i>
+                        </div>
+                        <h1 className="text-2xl font-bold text-gray-800">ChefLancer<span className="text-orange-600">AI</span></h1>
+                    </div>
+                    <div className="hidden md:flex gap-8 font-semibold text-gray-600">
+                        <button onClick={() => setTab('home')} className={activeTab === 'home' ? 'text-orange-600' : 'hover:text-orange-600'}>Find Food</button>
+                        <button onClick={() => setTab('ai-setup')} className={activeTab === 'ai-setup' ? 'text-orange-600' : 'hover:text-orange-600'}>AI Preferences</button>
+                        <button onClick={() => setTab('chef-dash')} className={activeTab === 'chef-dash' ? 'text-orange-600' : 'hover:text-orange-600'}>Chef Portal</button>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <i className="fas fa-user-circle text-2xl text-gray-400"></i>
+                    </div>
+                </div>
+            </nav>
+        );
+
+        const HomeView = () => (
+            <div className="animate-fadeIn">
+                <header className="bg-white py-16 px-4 mb-10 border-b">
+                    <div className="max-w-4xl mx-auto text-center">
+                        <span className="bg-orange-100 text-orange-700 px-4 py-1 rounded-full text-sm font-bold mb-4 inline-block">B.E. CSE CAPSTONE PROJECT</span>
+                        <h2 className="text-5xl font-extrabold text-gray-900 mb-6">Personalized Home Food <br/> Matched by AI.</h2>
+                        <div className="flex bg-white shadow-xl rounded-full p-2 border border-gray-100">
+                            <input type="text" placeholder="Search Chennai's best home chefs..." className="flex-1 px-6 outline-none text-gray-700" />
+                            <button className="bg-orange-600 text-white px-8 py-3 rounded-full font-bold hover:bg-orange-700">Search</button>
+                        </div>
+                    </div>
+                </header>
+
+                <section className="max-w-7xl mx-auto px-4 pb-20">
+                    <h3 className="text-2xl font-bold mb-8 flex items-center gap-2">
+                        <i className="fas fa-magic text-orange-500"></i> AI Recommended for You
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {[
+                            { name: "Saraswathi Amma", type: "Traditional South Indian", dist: "2.4 km", rating: 4.9, img: "https://images.unsplash.com/photo-1516715064081-40c3d8f3ac1c?auto=format&fit=crop&w=500" },
+                            { name: "The Healthy Pot", type: "Keto & Vegan Meals", dist: "1.1 km", rating: 4.7, img: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=500" },
+                            { name: "Malabar Flavors", type: "Authentic Kerala Style", dist: "4.5 km", rating: 4.8, img: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=500" }
+                        ].map((chef, i) => (
+                            <div key={i} className="chef-card bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                                <img src={chef.img} className="w-full h-48 object-cover" />
+                                <div className="p-6">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <h4 className="font-bold text-xl">{chef.name}</h4>
+                                        <span className="text-orange-600 font-bold">★ {chef.rating}</span>
+                                    </div>
+                                    <p className="text-gray-500 text-sm mb-4">{chef.type} • {chef.dist}</p>
+                                    <button className="w-full border-2 border-orange-600 text-orange-600 py-2 rounded-xl font-bold hover:bg-orange-600 hover:text-white transition">Order Meal</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            </div>
+        );
+
+        const AISetupView = () => (
+            <div className="max-w-3xl mx-auto py-16 px-4 animate-slideUp">
+                <div className="bg-white p-10 rounded-3xl shadow-lg">
+                    <h2 className="text-3xl font-bold mb-2">Personalize Your AI Engine</h2>
+                    <p className="text-gray-500 mb-8">We use these parameters for the Content-Based Filtering algorithm.</p>
+                    
+                    <div className="space-y-6">
+                        <div>
+                            <label className="block font-bold mb-3">Dietary Preference</label>
+                            <div className="flex gap-3 flex-wrap">
+                                {['Veg', 'Non-Veg', 'Vegan', 'Keto', 'Diabetic Friendly'].map(tag => (
+                                    <button key={tag} className="px-5 py-2 rounded-full border border-gray-200 hover:bg-orange-50 hover:border-orange-600"> {tag} </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block font-bold mb-3">Spice Tolerance</label>
+                            <input type="range" className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-600" />
+                            <div className="flex justify-between text-xs text-gray-400 mt-2"><span>Mild</span><span>Medium</span><span>Extra Spicy</span></div>
+                        </div>
+
+                        <button className="w-full bg-gray-900 text-white py-4 rounded-2xl font-bold text-lg mt-6 shadow-xl hover:bg-black transition">Save & Train Model</button>
+                    </div>
+                </div>
+            </div>
+        );
+
+        const ChefDashboard = () => (
+            <div className="max-w-7xl mx-auto py-12 px-4 flex flex-col md:flex-row gap-8">
+                <aside className="w-full md:w-64 space-y-2">
+                    <div className="bg-orange-600 text-white p-4 rounded-xl font-bold">Overview</div>
+                    <div className="p-4 hover:bg-white rounded-xl cursor-pointer">Manage Menu</div>
+                    <div className="p-4 hover:bg-white rounded-xl cursor-pointer">Active Orders</div>
+                    <div className="p-4 hover:bg-white rounded-xl cursor-pointer">Earnings</div>
+                </aside>
+                <main className="flex-1 space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-orange-600">
+                            <p className="text-gray-500 text-sm">Total Orders</p>
+                            <h4 className="text-3xl font-bold">124</h4>
+                        </div>
+                        <div className="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-green-600">
+                            <p className="text-gray-500 text-sm">Rating</p>
+                            <h4 className="text-3xl font-bold">4.8/5</h4>
+                        </div>
+                        <div className="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-blue-600">
+                            <p className="text-gray-500 text-sm">Revenue</p>
+                            <h4 className="text-3xl font-bold">₹12,450</h4>
+                        </div>
+                    </div>
+                    <div className="bg-white p-8 rounded-2xl shadow-sm">
+                        <h4 className="font-bold text-xl mb-6">Recent Order Activity</h4>
+                        <table className="w-full text-left">
+                            <thead>
+                                <tr className="text-gray-400 text-sm uppercase">
+                                    <th className="pb-4">Customer</th>
+                                    <th className="pb-4">Order</th>
+                                    <th className="pb-4">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr className="border-t">
+                                    <td className="py-4 font-medium">Arjun Mehra</td>
+                                    <td className="py-4">Mini Meal x 2</td>
+                                    <td className="py-4"><span className="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs">Preparing</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </main>
+            </div>
+        );
+
+        function App() {
+            const [activeTab, setTab] = useState('home');
+
+            return (
+                <div className="min-h-screen">
+                    <Navbar activeTab={activeTab} setTab={setTab} />
+                    {activeTab === 'home' && <HomeView />}
+                    {activeTab === 'ai-setup' && <AISetupView />}
+                    {activeTab === 'chef-dash' && <ChefDashboard />}
+                    
+                    <footer className="py-10 text-center text-gray-400 text-sm mt-20 border-t">
+                        <p>© 2026 ChefLancer Project Framework | CSE Department | Anna University</p>
+                    </footer>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
